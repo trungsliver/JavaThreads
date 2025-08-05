@@ -1,0 +1,15 @@
+============================ Mô hình Producer - Consumer ==========================
+1. Định nghĩa
+    - Mô hình Producer - Consumer (Nhà sản xuất - Người tiêu dùng) là một mẫu thiết kế kinh điển trong lập trình đa luồng (multithreading)
+        dùng để đồng bộ hóa luồng khi có sự chia sẻ tài nguyên giữa các luồng.
+
+    - Mô hình này bao gồm hai thành phần chính:
+                + Producer (Nhà sản xuất): Tạo ra dữ liệu (sản phẩm).
+                + Consumer (Người tiêu dùng): Sử dụng dữ liệu đó.
+
+    → Vấn đề: Consumer không thể tiêu thụ khi chưa có dữ liệu, và Producer không thể tiếp tục sản xuất nếu bộ đệm chứa dữ liệu chưa được tiêu thụ.
+
+2. Vấn đề cần giải quyết
+    - Làm sao để Producer chờ khi bộ đệm đã đầy?
+    - Làm sao để Consumer chờ khi bộ đệm rỗng?
+    - Làm sao để đồng bộ hóa quyền truy cập vào bộ đệm?
