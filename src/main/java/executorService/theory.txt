@@ -1,0 +1,55 @@
+===================== 1. SingleThreadExecutor =====================
+    ➤ Mô tả:
+        Tạo một thread duy nhất để xử lý các task.
+        Các task được đưa vào hàng đợi và xử lý tuần tự, từng cái một.
+        Nếu thread bị lỗi hoặc dừng, một thread mới sẽ tự động được tạo để thay thế.
+
+    ➤ Khi nào dùng:
+        Khi bạn muốn đảm bảo thứ tự thực thi.
+        Khi không cần xử lý song song, chỉ muốn queue task để chạy lần lượt.
+
+
+
+==================== 2. FixedThreadPool ========================
+    ➤ Mô tả:
+        Tạo một pool với số lượng thread cố định (do lập trình viên định nghĩa).
+        Nếu có nhiều task hơn số thread, các task sẽ đợi trong hàng đợi.
+        Các thread sẽ được tái sử dụng, không tạo mới mỗi lần.
+
+    ➤ Khi nào dùng:
+        Khi bạn biết rõ số lượng tác vụ cần xử lý song song.
+        Tốt cho các hệ thống ổn định với khối lượng công việc đều đặn.
+
+
+
+===================== 3. CachedThreadPool ========================
+    ➤ Mô tả:
+        Tạo pool với số lượng thread linh hoạt (tăng hoặc giảm tùy nhu cầu).
+        Không giới hạn số thread, nhưng các thread không hoạt động sẽ được loại bỏ sau 60 giây.
+        Nếu task mới đến, thread cũ sẽ được tái sử dụng (nếu rảnh); nếu không, tạo mới.
+
+    ➤ Khi nào dùng:
+        Khi có nhiều tác vụ nhỏ, thời gian ngắn, đến không đều.
+        Hệ thống cần khả năng co giãn linh hoạt theo nhu cầu.
+        
+        
+        
+==================== 4. ScheduledThreadPool ========================
+    ➤ Mô tả:
+        Dùng để lập lịch thực thi task: sau một khoảng thời gian hoặc định kỳ.
+        Có thể định nghĩa số lượng thread xử lý các tác vụ theo lịch.
+    
+    ➤ Khi nào dùng:
+        Khi bạn muốn chạy tác vụ định kỳ (cron, heartbeat, polling API,...).
+        Hoặc chạy một task sau một khoảng delay.
+        
+        
+        
+==================== SUMARY ======================
+
+| Loại Executor        | Số thread   | Tái sử dụng | Có hàng đợi?  | Dùng cho mục đích       |
+| -------------------- | ----------- | ----------- | ------------- | ----------------------- |
+| SingleThreadExecutor | 1           | Có          | Có            | Task tuần tự            |
+| FixedThreadPool      | Cố định (N) | Có          | Có            | Task song song giới hạn |
+| CachedThreadPool     | Linh hoạt   | Có          | Không         | Task nhỏ, bất chợt      |
+| ScheduledThreadPool  | Cố định (N) | Có          | Có (đặt lịch) | Task định kỳ hoặc delay |
