@@ -1,0 +1,13 @@
+1. Main thread as the parent thread
+    - Khi chúng ta bắt đầu một chương trình, việc thực thi thường bắt đầu với phương thức main().
+    - Phương thức này chạy trên main thread, có thể được xem là thread cha (parent thread) vì nó tạo ra các thread khác.
+
+2. Independent execution of threads
+    - Khi bạn tạo và khởi chạy các thread khác, chúng sẽ chạy song song với main thread trừ khi có chỉ thị đặc biệt.
+    - Trong điều kiện bình thường, tất cả các thread hoạt động độc lập với nhau, không thread nào chờ thread khác.
+
+3. What is .join()
+    - Hãy hình dung các thread giống như các dòng thực thi độc lập.
+    - Khi gọi .join() trên một thread cụ thể, thread cha (ví dụ main thread) sẽ nói rằng:
+        "Này thread con, khi nào bạn thực hiện xong công việc của mình, hãy tham gia vào luồng thực thi của tôi."
+    - Điều này có nghĩa là thread cha sẽ chờ thread con hoàn thành, rồi mới tiếp tục thực thi tiếp công việc của nó.
