@@ -1,0 +1,20 @@
+==================== Ưu tiên của luồng (Thread Priority) ====================
+
+- Giả sử có 10 luồng (threads) đang ở trạng thái sẵn sàng chạy (runnable), nhưng hệ thống chỉ có 1 CPU khả dụng.
+    Điều này có nghĩa là tại một thời điểm chỉ một luồng được thực thi, các luồng còn lại phải chờ.
+
+            ➤ Vậy ai sẽ quyết định luồng nào được chạy trên CPU?
+            ➤ Thành phần đảm nhiệm điều này gọi là Thread Scheduler (Bộ lập lịch luồng).
+
+- Mỗi luồng có một mức độ ưu tiên nhất định, và trong điều kiện bình thường,
+    luồng có độ ưu tiên cao hơn sẽ được CPU chọn để thực thi trước.
+
+- Giá trị độ ưu tiên có thể đặt từ 1 đến 10:
+              - 1 là mức ưu tiên thấp nhất (được biểu diễn là MIN_PRIORITY)
+              - 10 là mức ưu tiên cao nhất (biểu diễn là MAX_PRIORITY)
+              - Mặc định, một luồng có độ ưu tiên là 5, tức là NORM_PRIORITY
+
+- Khi có nhiều luồng có cùng độ ưu tiên, chúng sẽ được xử lý theo nguyên tắc FIFO (First In First Out)
+    luồng nào vào hàng đợi trước thì sẽ được xử lý trước.
+
+- Bộ lập lịch luồng (Thread Scheduler) sẽ lưu trữ và quản lý các luồng trong một hàng đợi (queue).
