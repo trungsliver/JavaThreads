@@ -1,0 +1,17 @@
+==================== Thread Synchronization - Đồng bộ ==============
+
+1. Thread Synchronization là gì?
+        - Khi nhiều luồng (threads) cùng chạy đồng thời và chia sẻ tài nguyên (biến, đối tượng, file, cơ sở dữ liệu...),
+            có nguy cơ xảy ra xung đột dữ liệu (data inconsistency).
+        - Ví dụ: hai luồng cùng lúc ghi và đọc vào một biến balance sẽ gây ra kết quả không mong muốn.
+        - Để tránh tình trạng này, cần có cơ chế đồng bộ hóa (synchronization) để đảm bảo rằng chỉ một luồng
+            được phép truy cập vào tài nguyên chia sẻ tại một thời điểm.
+
+→ Để đảm bảo tính toàn vẹn dữ liệu, Java cung cấp cơ chế đồng bộ hóa (synchronization), giúp kiểm soát truy cập vào tài nguyên chia sẻ.
+
+
+2. Tại sao cần Synchronization?
+        - Tránh race condition (tình trạng nhiều luồng "tranh giành" quyền truy cập vào cùng một tài nguyên).
+        - Đảm bảo rằng chỉ một luồng được phép truy cập vào phần critical section
+            (vùng quan trọng – thao tác với dữ liệu dùng chung) tại một thời điểm.
+        - Tăng độ an toàn luồng (thread safety) trong chương trình đa luồng.
