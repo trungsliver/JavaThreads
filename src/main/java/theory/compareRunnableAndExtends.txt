@@ -1,0 +1,14 @@
+Implementing Runnable vs Extending Thread
+      - Implementing Runnable: Tạo luồng bằng cách cài đặt interface Runnable.
+      - Extending Thread: Tạo luồng bằng cách kế thừa lớp Thread.
+
+Which approach is better? - Cách tiếp cận nào tốt hơn?
+      - Implementing Runnable:
+            + Linh hoạt hơn, có thể kế thừa từ lớp khác.
+            + Cho phép tái sử dụng mã nguồn.
+            + Tốt cho việc chia sẻ tài nguyên giữa các luồng.
+
+      - Extending Thread:
+            + Đơn giản, dễ hiểu cho người mới.
+            + Không thể kế thừa từ lớp khác.
+            + Ít linh hoạt hơn trong việc quản lý luồng.
