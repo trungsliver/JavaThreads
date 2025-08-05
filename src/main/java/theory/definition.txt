@@ -1,0 +1,40 @@
+================= SEQUENTIAL EXECUTION – THỰC THI TUẦN TỰ =================
+
+    Là cách thực thi chương trình từng bước một, từ trên xuống dưới.
+
+    - Mỗi lần chỉ một tác vụ được xử lý.
+    - Dễ đọc, dễ debug, nhưng không tận dụng được đa luồng hay đa nhân.
+
+
+================= THREAD – LUỒNG TRONG JAVA =====================
+
+    Thread là đơn vị nhỏ nhất có thể được lên lịch và thực thi trong một chương trình Java.
+
+    - Mỗi thread có thể chạy độc lập.
+    - Java có sẵn luồng chính (main thread) khi chương trình khởi chạy.
+    - Thread được tạo bằng:
+        1. Kế thừa lớp Thread.
+        2. Cài đặt interface Runnable.
+
+
+
+================== MULTITHREADING – ĐA LUỒNG TRONG JAVA ==================
+
+    Multithreading là kỹ thuật cho phép chương trình chạy nhiều luồng cùng lúc.
+
+    - Giúp tăng hiệu suất, phản hồi nhanh.
+    - Tận dụng tối đa CPU đa nhân.
+    - Cần cẩn trọng với việc đồng bộ tài nguyên (synchronized).
+
+
+
+=================== CONCURRENCY – TÍNH ĐỒNG THỜI ========================
+
+     Concurrency là khả năng chương trình tổ chức xử lý nhiều tác vụ gần như đồng thời.
+
+     - Trên 1 CPU: CPU luân phiên giữa các tác vụ (gần như cùng lúc).
+     - Trên nhiều CPU: Có thể kết hợp với parallelism.
+     - Cần quản lý đồng bộ nếu có chia sẻ tài nguyên.
+
+     Ví dụ:
+     Một ứng dụng vừa tải file vừa hiển thị progress bar — đó là concurrency.
