@@ -1,0 +1,16 @@
+================ WAIT & NOTIFY ================
+1. Khái niệm
+    - wait(), notify(), notifyAll() được sử dụng để giao tiếp giữa các luồng trong môi trường đa luồng (multithreading).
+        + wait(): Cho luồng hiện tại tạm dừng và nhường quyền kiểm soát lock (monitor) cho các luồng khác.
+        + notify(): Đánh thức một luồng duy nhất đang chờ trên đối tượng lock.
+        + notifyAll(): Đánh thức tất cả các luồng đang chờ trên đối tượng lock.
+
+2. Điều kiện sử dụng
+    - Các phương thức wait(), notify(), và notifyAll() chỉ được gọi bên trong một khối synchronized (đã giữ lock).
+    - Nếu gọi bên ngoài khối synchronized, Java sẽ ném ra IllegalMonitorStateException.
+
+3. Cách hoạt động
+    - Quy trình:
+        + Luồng A gọi wait() ⇒ nó giải phóng lock và chuyển vào trạng thái WAITING.
+        + Luồng B (khác) chạy, làm việc gì đó, rồi gọi notify() hoặc notifyAll().
+        + Luồng A được đánh thức (chuyển lại thành RUNNABLE) ⇒ chờ giành lại lock để tiếp tục.

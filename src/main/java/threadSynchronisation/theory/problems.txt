@@ -1,0 +1,40 @@
+================= Các Vấn đề Đồng Bộ Hóa (Synchronization Problems) ===============
+
+1. Race Condition (Điều kiện tranh chấp)
+    - Xảy ra khi hai hoặc nhiều luồng truy cập và ghi vào cùng một biến mà không có đồng bộ hóa đúng cách.
+    - Ví dụ: Hai luồng cùng tăng giá trị biến count nhưng kết quả cuối cùng sai vì cùng ghi đè lên nhau.
+    - Giải pháp: Dùng từ khóa synchronized hoặc các class trong java.util.concurrent.atomic.
+
+2. Deadlock (Bế tắc)
+    - Xảy ra khi hai hoặc nhiều luồng bị kẹt chờ nhau vô thời hạn do giữ lock mà luồng kia cần.
+    - Ví dụ:
+        + Thread A giữ Lock X và cần Lock Y.
+        + Thread B giữ Lock Y và cần Lock X.
+    - Giải pháp:
+        + Thiết kế thứ tự khóa hợp lý.
+        + Tránh giữ nhiều lock cùng lúc.
+        + Dùng ReentrantLock với tryLock() có timeout.
+
+3. Livelock (Khóa sống)
+    - Các luồng không bị kẹt nhưng liên tục thay đổi trạng thái để tránh nhau, dẫn đến không luồng nào tiếp tục được.
+    - Ví dụ: Hai người liên tục nhường nhau trên đường nhưng không ai đi.
+    - Giải pháp:
+        + Giới hạn số lần retry.
+        + Logic kiểm soát xung đột hợp lý.
+
+4. Starvation (Đói tài nguyên)
+    - Một luồng không bao giờ được thực thi vì các luồng khác chiếm tài nguyên quá thường xuyên.
+    - Nguyên nhân: Luồng có độ ưu tiên thấp không đủ quyền truy cập tài nguyên.
+    - Giải pháp:
+        + Dùng ReentrantLock(true) để tạo lock công bằng.
+        + Thiết kế lịch trình công bằng.
+
+5. Priority Inversion (Đảo ngược độ ưu tiên)
+    - Luồng có ưu tiên cao bị chặn bởi luồng có ưu tiên thấp đang giữ tài nguyên.
+    - Giải pháp: Dùng hệ thống có hỗ trợ priority inheritance (kế thừa ưu tiên).
+
+6. Thread Interference (Can thiệp giữa các luồng)
+    - Khi nhiều luồng cùng thao tác không nguyên tử (atomic) lên dữ liệu, dẫn đến kết quả sai lệch.
+    - Giải pháp:
+        + Dùng synchronized.
+        + Dùng AtomicInteger, AtomicLong, hoặc các class thread-safe khác.
