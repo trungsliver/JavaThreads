@@ -1,0 +1,21 @@
+==================== Volatile Keyword ====================
+
+1. Core, Register & Cache
+    - Mỗi CPU core có bộ nhớ riêng gọi là cache để lưu trữ nhanh các biến đang được sử dụng thay vì truy cập thẳng vào RAM.
+        Khi một thread chạy trên 1 core, nó có thể đọc/ghi biến từ cache chứ không phải từ bộ nhớ chính.
+            + Register là nơi lưu trữ tạm thời ngay trong CPU để xử lý nhanh hơn cache.
+            + Cache lưu giá trị gần nhất của biến, nhưng có thể không đúng với giá trị thật trong bộ nhớ chính.
+
+2. The Visibility Problem
+    Giả sử có hai thread cùng truy cập một biến:
+        - Thread A thay đổi giá trị của biến running = false
+        - Thread B vẫn thấy giá trị cũ running = true do nó đang đọc từ cache riêng của nó.
+        => Gây ra lỗi logic vì giá trị mới không được "thấy" bởi các thread khác
+        → gọi là visibility problem (vấn đề về khả năng nhìn thấy thay đổi).
+
+3. Ví dụ thực tế:
+   - Một cậu bé (Thread A) ngồi trong phòng viết chữ lên bảng “Ăn cơm chưa?” (flag = false).
+   - Một cô bé khác (Thread B) ở phòng bên cứ nhìn vào ảnh chụp bảng (bản sao cái bảng mà cô ấy có (cache)).
+   - Cậu bé đổi chữ thành “Rồi!” (flag = true) nhưng không thông báo gì.
+   - Vì cô bé không thấy bản chính thay đổi → tiếp tục hỏi hoài!
+   => Nhưng nếu cả hai dùng chung bảng và nhìn trực tiếp vào bảng thật (volatile flag) → cô bé sẽ thấy thay đổi ngay lập tức
