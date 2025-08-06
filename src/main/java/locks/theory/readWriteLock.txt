@@ -1,0 +1,27 @@
+====================== Read-Write Lock ======================
+
+|> Giới thiệu (Introduction) <|
+    - ReadWriteLock là một dạng khóa nâng cao trong Java, giúp tăng hiệu suất khi có nhiều luồng đọc nhưng ít luồng ghi.
+    - Thay vì chỉ có 1 khóa duy nhất (mutex) cho cả đọc và ghi, ReadWriteLock tách ra:
+            + Read Lock (khóa đọc): Nhiều luồng có thể đọc đồng thời nếu không có ai ghi.
+            + Write Lock (khóa ghi): Chỉ một luồng được phép ghi, và không có luồng nào đọc cùng lúc.
+
+|> Ưu điểm:
+    - Tăng hiệu suất truy cập dữ liệu trong môi trường đa luồng.
+    - Phù hợp cho các ứng dụng cần truy cập dữ liệu thường xuyên để đọc, nhưng ít khi ghi (ví dụ: hệ thống thống kê, cache...).
+
+|> Wait Queue in ReadWrite Lock <|
+    Hàng đợi chờ (wait queue) trong ReadWriteLock sẽ hoạt động như sau:
+    - Nếu không ai ghi, các luồng đọc sẽ được phép đọc đồng thời.
+    - Nếu có một luồng đang ghi, tất cả các luồng đọc và ghi khác sẽ chờ trong hàng đợi.
+    - Khi writeLock được giải phóng, hệ thống sẽ:
+            + Ưu tiên luồng ghi tiếp theo (tuỳ cấu hình fairness), hoặc
+            + Cho phép nhiều luồng đọc cùng lúc nếu không có writer nào chờ
+
+|> Ví dụ thực tế – Quán cà phê có thực đơn:
+   - Thực đơn (menu) là dữ liệu chia sẻ.
+   - Khách hàng đến và xem thực đơn → hành động đọc (có thể nhiều người xem cùng lúc).
+   - Nhân viên quản lý cập nhật giá → hành động ghi (khi đang chỉnh sửa, không ai được xem).
+
+           ✅ Nếu nhiều khách cùng xem menu → cho phép.
+           ❌ Nếu quản lý đang chỉnh sửa menu → tất cả phải đợi xong mới được xem.
