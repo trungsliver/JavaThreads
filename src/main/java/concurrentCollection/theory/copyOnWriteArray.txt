@@ -1,0 +1,39 @@
+=================== CopyOnWriteArrayList ===================
+
+1. Giới thiệu về COWA
+   - `CopyOnWriteArrayList` cung cấp một danh sách an toàn với luồng (thread-safe) bằng cách sử dụng chiến lược sao chép khi ghi (copy-on-write).
+   - Khi có thao tác ghi (add, remove, set...), danh sách sẽ tạo một bản sao mới và áp dụng thay đổi lên bản sao đó.
+        Các thao tác đọc không bị ảnh hưởng.
+
+2. Khi nào và tại sao nên sử dụng COWA?
+   - Khi bạn có nhiều luồng đọc và ít thao tác ghi, vì ghi sẽ tốn chi phí sao chép.
+   - Khi bạn muốn tránh lỗi đồng bộ hóa (synchronization errors) mà vẫn đảm bảo an toàn luồng.
+   - Khi bạn cần duyệt danh sách một cách an toàn trong môi trường đa luồng, ví dụ:
+     + Duyệt danh sách người dùng trong ứng dụng chat.
+     + Quản lý danh sách listener (sự kiện) trong GUI mà không cần khóa đồng bộ.
+
+3. Cách hoạt động của COWA (How it works?)
+   - Khi một thao tác ghi được thực hiện:
+     1. Tạo một bản sao hoàn chỉnh của danh sách hiện tại.
+     2. Áp dụng thay đổi lên bản sao.
+     3. Thay thế danh sách gốc bằng bản sao mới.
+   - Các thao tác đọc như `get()`, `iterator()`, `forEach()` sẽ hoạt động trên bản sao **cố định**, đảm bảo không có xung đột dữ liệu.
+
+4. Tình huống thực tế: Danh sách món ăn ở nhà hàng
+   4.1. Bối cảnh:
+       - Bạn đang ở một nhà hàng lớn, nơi mọi người đều có thể xem thực đơn.
+       - Nhưng chỉ có đầu bếp mới được thêm món mới vào thực đơn.
+       - Nếu đầu bếp sửa trực tiếp thực đơn, thì khách đang xem có thể bị rối (nhìn thấy thực đơn thay đổi giữa chừng!).
+
+   4.2. Giải pháp: "Copy On Write"
+            Mỗi khi đầu bếp muốn thêm một món mới vào thực đơn:
+       - Sao chép toàn bộ thực đơn hiện tại.
+       - Thêm món mới vào bản sao.
+       - Cập nhật thực đơn mới sau khi hoàn tất.
+       - Mọi khách hàng sẽ bắt đầu xem bản thực đơn mới.
+       - Trong lúc đó, khách cũ vẫn đang xem bản thực đơn cũ mà họ đang cầm.
+
+   4.3. Lợi ích:
+       - Khách hàng không bị rối khi đang xem thực đơn.
+       - Đầu bếp vẫn thêm được món mới.
+       - Không ai tranh giành nhau một bản thực đơn duy nhất.
