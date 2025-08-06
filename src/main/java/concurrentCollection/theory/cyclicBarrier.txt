@@ -1,0 +1,46 @@
+======================== Cyclic Barrier ========================
+1. Giới thiệu về CyclicBarrier (Introduction to Cyclic Barrier)
+    1.1. CyclicBarrier là gì?
+        - Nó được sử dụng để đồng bộ hóa một nhóm các thread (luồng) lại với nhau tại một điểm nhất định (barrier).
+        - Mỗi thread khi hoàn tất công việc của mình sẽ gọi phương thức await() và đợi cho đến khi tất cả các thread khác cũng gọi await().
+        - Khi đủ số lượng thread đã đến barrier, tất cả sẽ cùng tiếp tục chạy.
+
+    1.2. Đặc điểm:
+        - "Cyclic" có nghĩa là có thể tái sử dụng, tức là barrier có thể được dùng lại sau khi toàn bộ các thread vượt qua barrier trước đó.
+        - Khác với CountDownLatch chỉ dùng một lần, CyclicBarrier có thể lặp lại nhiều vòng.
+
+    1.3. Ứng dụng:
+        - Mô phỏng bước đồng bộ của các thread.
+        - Tính toán ma trận theo từng dòng/khối.
+        - Các trò chơi nhiều người chơi, nơi các bước được thực hiện đồng bộ.
+
+
+2. Cách CyclicBarrier hoạt động bên trong (How does CyclicBarrier work under the hood?)
+    2.1. Cấu trúc:
+        - CyclicBarrier được khởi tạo với một số lượng thread mong muốn (ví dụ: 3).
+        - Mỗi thread sẽ gọi phương thức await() khi nó đã hoàn thành công việc của mình.
+
+    2.2. Cơ chế hoạt động:
+        - Mỗi lần một thread gọi await(), bộ đếm sẽ tăng lên.
+        - Khi bộ đếm đạt đến số lượng thread đã định, barrier sẽ mở và tất cả các thread sẽ tiếp tục thực hiện công việc của mình.
+        - Nếu có hành động tùy chọn (Runnable) được cung cấp, nó sẽ được thực thi ngay trước khi các thread tiếp tục.
+
+    2.3. Reset:
+        - Sau khi barrier mở, nó tự động reset để có thể sử dụng cho vòng tiếp theo.
+
+    2.4. Xử lý lỗi:
+        - Nếu một thread bị gián đoạn hoặc gặp lỗi, barrier sẽ bị đánh dấu là broken và các thread khác sẽ nhận lỗi BrokenBarrierException.
+
+3. Tổng kết:
+    | Đặc điểm                | Mô tả                                         |
+    | ----------------------- | --------------------------------------------- |
+    | Số lượng thread chờ     | Xác định khi tạo CyclicBarrier                |
+    | Tái sử dụng             | Có                                            |
+    | Phương thức chính       | `await()`                                     |
+    | Hành động khi đủ thread | Có thể đính kèm `Runnable`                    |
+    | Ứng dụng                | Đồng bộ nhiều thread thực hiện từng giai đoạn |
+
+4. Ví dụ (Mô tả thực tế):
+    ❖ Ý tưởng ví dụ:
+        - Giả sử có 3 thread đại diện cho 3 người chơi.
+        - Mỗi người chuẩn bị xong thì gọi await(), đợi tất cả mọi người chuẩn bị xong thì bắt đầu cùng lúc.
