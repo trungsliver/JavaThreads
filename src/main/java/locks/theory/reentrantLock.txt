@@ -1,0 +1,63 @@
+============================= Reentrant Lock =============================
+
+
+1. What is Reentrant Lock?
+    -> "Reentrant" có nghĩa là: cùng một luồng (thread) có thể chiếm khóa nhiều lần, mà không bị chặn lại, miễn là nó đã giữ khóa từ trước.
+    -> Nó thay thế cho `synchronized` và cung cấp nhiều khả năng mạnh mẽ hơn.
+
+2. How does this work?
+    -> Nếu một luồng đang giữ khóa, nó có thể vào lại (re-enter) các đoạn code khóa khác mà không bị deadlock.
+    -> Nó dùng một bộ đếm giữ khóa (hold count). Mỗi khi thread gọi lock(), bộ đếm tăng lên.
+        Khi gọi unlock(), bộ đếm giảm xuống. Chỉ khi bộ đếm = 0 thì khóa mới được nhả ra.
+
+|> When Reentrant locks are needed?
+    -> Khi bạn cần:
+       - Kiểm soát chi tiết việc cấp phát & giải phóng khóa.
+       - Có nhiều đoạn code được khóa bởi cùng 1 thread.
+       - Dùng `tryLock()` để tránh chờ mãi (deadlock).
+       - Dùng `newCondition()` để tạo ra các điều kiện chờ giống như `wait()/notify()`.
+
+|> Code Demonstration
+    -> Ví dụ: Mô phỏng bếp nhà hàng dùng ReentrantLock
+        - Bếp có khóa, chỉ một người được vào nấu.
+        - Đầu bếp đang nấu, nhưng trong lúc đó cần kiểm tra lại món — vì đang giữ khóa, đầu bếp vẫn được vào.
+                → Đây là hành vi "Reentrant" (có thể vào lại).
+
+        - Nếu dùng tryLock(), đầu bếp thử mở cửa bếp. Nếu đang bận, đầu bếp bỏ đi chờ tí nữa quay lại.
+        - Nếu dùng newCondition(), thì có thể làm như:
+        - Đầu bếp chờ món trước được lấy đi (await())
+        - Khi món được lấy → báo hiệu để đầu bếp tiếp tục (signal())
+
+|> Lock Fairness
+    -> ReentrantLock hỗ trợ chế độ "fair" — công bằng, nghĩa là luồng nào chờ lâu nhất sẽ được cấp quyền đầu tiên.
+    -> Dùng: `new ReentrantLock(true)` để bật chế độ công bằng.
+    -> Tuy nhiên, fair lock có thể làm giảm hiệu năng, nên mặc định là unfair (false).
+
+|> Important methods of Reentrant Locks <|
+    -> getHoldCount()
+        - Trả về số lần luồng hiện tại đang giữ khóa.
+        - Ví dụ: 1 thread gọi `lock()` 3 lần thì `getHoldCount()` trả về 3.
+
+    -> tryLock()
+        - Cố gắng chiếm khóa. Nếu không có sẵn thì **không chờ**, trả về false ngay.
+        - Dùng để tránh deadlock.
+
+    -> tryLock(timeout, timeUnit)
+        - Cố gắng chiếm lock trong một khoảng thời gian nhất định.
+        - Nếu hết thời gian mà vẫn không chiếm được thì trả về false.
+
+    -> tryLock() has a problem
+        - Nếu không xử lý tốt, có thể dẫn đến **bỏ qua đoạn code quan trọng** nếu thread không chiếm được lock.
+        - Cần có logic fallback hoặc retry để xử lý khi `tryLock()` thất bại.
+
+    -> isHeldByCurrentThread()
+        - Kiểm tra xem luồng hiện tại có đang giữ khóa hay không.
+
+    -> getQueueLength()
+        - Trả về số luồng đang chờ khóa. Có thể dùng để kiểm tra độ tắc nghẽn.
+
+    -> newCondition()
+        - Tạo điều kiện chờ (Condition) như `wait()`/`notify()`
+        - Giúp quản lý các luồng chờ đợi linh hoạt hơn.
+
+
