@@ -1,0 +1,42 @@
+========================= Exchanger =========================
+
+💡 1. Giới thiệu về Exchanger
+   - Exchanger cho phép hai luồng trao đổi dữ liệu với nhau tại một điểm gặp gỡ (rendezvous point).
+   - Mỗi luồng gọi `exchange()` sẽ bị chặn lại cho đến khi luồng còn lại cũng gọi `exchange()`, lúc đó cả hai sẽ trao đổi dữ liệu.
+   - Đây là một công cụ hữu ích khi hai luồng cần trao đổi kết quả, dữ liệu hoặc trạng thái tạm thời với nhau.
+
+2. Khi nào nên sử dụng Exchanger?
+   - Khi bạn có hai luồng làm việc cùng nhau và cần trao đổi dữ liệu qua lại một cách đồng bộ.
+   - Khi bạn cần thiết kế hệ thống producer-consumer đối xứng, nơi cả hai bên đều chờ đợi lẫn nhau để trao đổi thông tin.
+   - Ví dụ thực tế:
+     + Hai thread xử lý dữ liệu sau đó **hoán đổi buffer** cho nhau để tiếp tục xử lý.
+     + Một thread gửi dữ liệu đã mã hóa, thread còn lại nhận, giải mã, rồi gửi ngược dữ liệu đã xử lý.
+     + Mô phỏng giao tiếp song phương trong môi trường đa luồng.
+
+3. Ví dụ mô phỏng Exchanger
+   - Hãy tưởng tượng hai người cùng chơi trò đổi đồ chơi: mỗi người đưa món đồ của mình r,
+        họ chỉ trao đổi được khi cả hai cùng đồng ý và đưa đồ ra cùng lúc.
+   - Nếu chỉ có một người đưa ra thì phải chờ người kia → đó chính là cách `Exchanger.exchange()` hoạt động.
+
+4. Cách triển khai Exchanger trong Java
+   - Khởi tạo một đối tượng Exchanger:
+   - Hai luồng sử dụng:
+   - Mỗi luồng gửi một dữ liệu, và nhận lại dữ liệu từ luồng còn lại.
+
+5. So sánh Exchanger với Queue
+
+     | Tiêu chí                | Exchanger                             | Queue                             |
+     |-------------------------|----------------------------------------|-----------------------------------|
+     | Giao tiếp               | Điểm – Điểm (2 luồng)                  | Một – Nhiều (producer-consumer)   |
+     | Cách hoạt động          | Đồng bộ (synchronous)                  | Bất đồng bộ (asynchronous)        |
+     | Độ đối xứng             | Đối xứng (hai bên đều trao đổi dữ liệu)| Không đối xứng (một bên gửi, một bên nhận) |
+     | Bộ đệm trung gian       | Không                                  | Có (dạng hàng đợi)                |
+     | Đơn giản hóa            | Chỉ phù hợp cho 2 luồng                | Linh hoạt cho nhiều luồng         |
+
+6. Exchanger và SynchronousQueue có giống nhau không?
+   - Giống:
+     + Cả hai đều sử dụng mô hình đồng bộ, nơi producer và consumer **phải gặp nhau để trao đổi dữ liệu**.
+   - Khác:
+     + `SynchronousQueue`: chủ yếu dành cho mô hình producer-consumer không buffer (gửi một chiều).
+     + `Exchanger`: được thiết kế cho **giao tiếp hai chiều đối xứng** — cả hai bên đều **gửi và nhận** dữ liệu từ nhau.
+
