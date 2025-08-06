@@ -1,0 +1,31 @@
+============================== Semaphores ==============================
+
+1. What are Semaphores?
+    - Semaphore là một cơ chế đồng bộ hóa (synchronization) được dùng để:
+            + Hạn chế số lượng thread truy cập vào một tài nguyên chung tại cùng một thời điểm.
+            + Có thể coi nó như một quầy bán vé có giới hạn số lượng vé (permits). Thread nào lấy được vé thì được vào.
+
+2.  Ví dụ thực tế:
+   - Nhà vệ sinh có 3 buồng: chỉ 3 người được vào cùng lúc. Người thứ 4 phải đợi.
+
+3. Cách hoạt động:
+    - Semaphore có một số lượng vé (permits) nhất định.
+    - Khi thread muốn truy cập tài nguyên, nó sẽ:
+        + Gọi `acquire()` để lấy một vé. Nếu không còn vé, nó sẽ chờ.
+        + Sau khi sử dụng xong, gọi `release()` để trả vé lại.
+    - Nếu không còn vé, thread sẽ bị chặn cho đến khi có vé được trả lại.
+
+4. Các phương thức chính:
+    | Phương thức                      | Mô tả                                                 |
+    | -------------------------------- | ----------------------------------------------------- |
+    | `acquire()`                      | Chặn (block) nếu không có permit                      |
+    | `tryAcquire()`                   | Thử lấy permit, không chặn nếu không có               |
+    | `tryAcquire(timeout, unit)`      | Chờ một khoảng thời gian rồi thôi                     |
+    | `release()`                      | Trả lại permit                                        |
+    | `availablePermits()`             | Số lượng permit còn lại                               |
+    | `new Semaphore(count, fairness)` | fairness = true → đảm bảo cấp phép theo thứ tự (FIFO) |
+
+5. Khi nào dùng Semaphore?
+    - Khi cần giới hạn số lượng thread truy cập vào tài nguyên chung.
+    - Khi cần quản lý tài nguyên có giới hạn (như kết nối cơ sở dữ liệu, băng thông mạng).
+    - Khi muốn tránh tình trạng quá tải (overload) cho hệ thống.
