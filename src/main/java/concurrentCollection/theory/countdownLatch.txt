@@ -1,0 +1,33 @@
+================================= Countdown Latch ===============================
+
+▶1. Giới thiệu về Countdown Latch
+    - CountDownLatch là một lớp trong Java thuộc gói java.util.concurrent, giúp đồng bộ hóa giữa các luồng.
+    - Nó hoạt động như một cánh cổng chờ, chỉ mở khi số lượng đếm về 0.
+    - Được sử dụng để đảm bảo một hoặc nhiều luồng chính đợi cho đến khi các luồng phụ hoàn thành nhiệm vụ của chúng.
+
+
+2. Khi nào nên sử dụng Countdown Latch?
+    - Khi bạn có nhiều luồng chạy song song (ví dụ: 3 task xử lý dữ liệu), và muốn luồng chính đợi cho đến khi tất cả task này xong.
+    - Khi bạn cần chờ 1 nhóm nhiệm vụ hoàn thành trước khi tiếp tục.
+    - Ví dụ thực tế:
+            + Tải dữ liệu từ 3 file khác nhau → đợi xong mới xử lý
+            + Kiểm thử đa luồng (JUnit + countdown latch)
+            + Mô phỏng kiểm tra đồng thời
+
+3. Countdown Latch có giống .join() không?
+    - Giống: Cả hai đều dùng để chờ các luồng hoàn tất công việc trước khi tiếp tục.
+    - Khác:
+        + .join() chỉ dùng cho 1 luồng, trong khi Countdown Latch có thể dùng cho nhiều luồng.
+        + Countdown Latch có thể đếm ngược và cho phép theo dõi nhiều điều kiện phức tạp hơn.
+
+        | Tiêu chí  | `join()`                   | `CountDownLatch`                          |
+        | --------- | -------------------------- | ----------------------------------------- |
+        | Loại      | Hàm của Thread             | Đối tượng độc lập                         |
+        | Chờ       | 1 thread chờ 1 thread khác | Chờ nhiều thread (tùy theo count)         |
+        | Linh hoạt | Ít linh hoạt hơn           | Linh hoạt, dùng cho các hệ thống phức tạp |
+
+
+4. Mục đích sử dụng Countdown Latch
+    - Đảm bảo một sự phối hợp hợp lý giữa các luồng.
+    - Dùng cho các tác vụ khởi tạo song song, tải tài nguyên, kiểm thử,…
+    - Thay thế .join() khi muốn theo dõi nhiều luồng hoặc điều kiện phức tạp hơn.
