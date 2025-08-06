@@ -1,0 +1,36 @@
+==================== Atomic Variables ====================
+
+1. What's read-modify-write cycle?
+    - Đây là chu trình đọc - sửa - ghi trong các phép toán như: x = x + 1
+    - Vấn đề: Trong môi trường đa luồng (multithreaded), nếu 2 thread cùng đọc và sửa x cùng lúc:
+        + Cả hai đều đọc x = 5
+        + Cùng tăng x + 1, đều được 6
+        + Ghi đè x = 6 ⇒ kết quả sai, vì đúng ra phải là x = 7
+    => Đây gọi là race condition.
+
+2. What are Atomic Variables?
+    - Là các biến được thiết kế để hoạt động an toàn trong môi trường đa luồng mà không cần dùng synchronized/lock.
+    - Các phép toán như tăng/giảm sẽ được thực hiện atomic (nguyên tử) – nghĩa là toàn vẹn, không bị chen ngang.
+
+3. Different types of Atomic Variables
+       AtomicInteger → dùng cho số nguyên
+       AtomicLong → dùng cho số nguyên lớn
+       AtomicBoolean → dùng cho giá trị true/false
+
+4. Basic Operations
+    | Phép Toán                         | Giải thích                                              |
+    | --------------------------------- | ------------------------------------------------------- |
+    | `get()`                           | Lấy giá trị hiện tại                                    |
+    | `set(value)`                      | Đặt lại giá trị mới                                     |
+    | `compareAndSet(expected, update)` | Nếu giá trị hiện tại = expected → cập nhật thành update |
+    | `getAndIncrement()`               | Trả về giá trị hiện tại, sau đó tăng lên 1              |
+    | `incrementAndGet()`               | Tăng lên 1 rồi trả về giá trị mới                       |
+    | `getAndDecrement()`               | Trả về rồi giảm                                         |
+    | `decrementAndGet()`               | Giảm rồi trả                                            |
+
+
+5. Use cases
+    - Khi cần cập nhật giá trị đơn giản (int/boolean/long) theo cách thread-safe.
+    - Thay thế cho synchronized nếu logic không phức tạp.
+    - Ví dụ:
+        + đếm số lượng người dùng online, cập nhật trạng thái bật/tắt của một tính năng.
