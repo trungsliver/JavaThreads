@@ -1,0 +1,49 @@
+========================== CONCURRENT MAP ==========================
+
+1. Giới thiệu về Concurrent Map
+    - ConcurrentMap cung cấp khả năng truy cập và cập nhật an toàn trong môi trường đa luồng (multithreading)
+        mà không cần đồng bộ hóa (synchronized) ở phía người dùng.
+    -  ConcurrentMap là công cụ thiết yếu để xử lý dữ liệu an toàn trong môi trường đa luồng.
+    Việc sử dụng đúng loại ConcurrentMap sẽ giúp:
+        + Tránh lỗi race condition.
+        + Tăng hiệu năng so với cách đồng bộ hóa toàn cục.
+
+
+2. Tại sao cần dùng ConcurrentMap?
+    - Trong lập trình đa luồng, nếu nhiều luồng cùng truy cập và chỉnh sửa một Map thông thường như HashMap,
+       sẽ dễ xảy ra lỗi (ConcurrentModificationException, mất dữ liệu, deadlock,...). Vì thế, **ConcurrentMap được thiết kế để:
+    - Cho phép nhiều luồng đọc/ghi đồng thời mà vẫn đảm bảo tính toàn vẹn dữ liệu.
+    - Tăng hiệu suất hơn so với dùng Collections.synchronizedMap() nhờ sử dụng kỹ thuật khóa (locking) hiệu quả hơn (segment-level locking).
+
+
+3. Các triển khai chính của Concurrent Map
+    3.1. ConcurrentHashMap
+        - Là triển khai phổ biến nhất.
+        - Dùng kỹ thuật Segmented Locking hoặc bucket-level locking (ở các phiên bản cũ).
+        - Hỗ trợ chia nhỏ Map thành nhiều vùng (segments) để nhiều luồng có thể thao tác song song ở các vùng khác nhau.
+
+    3.2. ConcurrentSkipListMap
+        - Triển khai dựa trên Skip List, cho phép truy xuất có thứ tự (sorted).
+        - Là lựa chọn thay thế cho TreeMap trong môi trường đa luồng.
+
+    3.3. ConcurrentLinkedHashMap (ít phổ biến hơn)
+        - Mở rộng LinkedHashMap (có duy trì thứ tự truy cập hoặc chèn) và hỗ trợ đa luồng.
+        - Thường được dùng khi cần tính năng LRU cache.
+
+    3.4. ConcurrentNavigableMap
+        - Interface mở rộng ConcurrentMap + NavigableMap.
+        - Hỗ trợ thao tác như subMap, headMap, tailMap trong môi trường thread-safe.
+
+4.  Cơ chế hoạt động nội bộ của ConcurrentMap
+   4.1 Thêm phần tử vào ConcurrentHashMap
+        - Hashing và xác định Segment (bucket): Sử dụng hàm hash để xác định vị trí chính xác của phần tử trong Map.
+        - Acquiring Lock (Lấy khóa): Chỉ khóa vùng liên quan, không khóa toàn bộ Map như synchronizedMap.
+        - Insertion in Segment (Chèn phần tử): Chèn phần tử vào segment tương ứng.
+        - Releasing Lock (Giải phóng khóa): Sau khi chèn xong thì mở khóa.
+
+   4.2. Truy xuất phần tử từ ConcurrentHashMap
+        - Hashing và xác định Segment
+        - Acquiring Lock (nếu cần thiết)
+        - Searching in Segment
+        - Releasing Lock
+   ⚠️ Lưu ý: Việc truy xuất thường không cần khóa trong Java 8 trở lên nhờ vào volatile và cơ chế CAS (Compare And Swap).
