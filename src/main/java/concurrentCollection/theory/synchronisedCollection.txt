@@ -1,0 +1,35 @@
+=================== Concurrent Collections (Bộ sưu tập đồng thời) ===================
+
+1. Hầu hết các Collection trong Java không thread-safe
+    - Các class như ArrayList, HashMap, HashSet không an toàn khi truy cập từ nhiều luồng (multi-threading).
+    - Nếu nhiều luồng truy cập và thay đổi cùng một Collection mà không có đồng bộ (synchronization) thì có thể dẫn đến:
+    - Lỗi runtime (như ConcurrentModificationException)
+    - Dữ liệu không nhất quán (data corruption)
+
+
+2. Cách làm cho Collection an toàn khi đa luồng (thread-safe)
+    ➤ Sử dụng Collections.synchronized()
+            Java cung cấp phương thức Collections.synchronizedList(), synchronizedMap()...
+            Cơ chế này sẽ bao bọc (wrap) Collection gốc và thêm khóa (lock) để tránh xung đột khi nhiều luồng cùng truy cập.
+
+    ➤ Sử dụng các Collection đồng thời (Concurrent Collections)
+            Java cung cấp các Collection được thiết kế sẵn để dùng trong môi trường đa luồng:
+                        ConcurrentHashMap
+                        CopyOnWriteArrayList
+                        BlockingQueue
+            Những Collection này được thiết kế hiệu quả hơn và hỗ trợ tốt hơn trong môi trường đồng thời.
+
+
+3. Nhược điểm của việc dùng Collections.synchronized()
+    ➤ Coarse-grained locking (khóa thô toàn bộ)
+            Mỗi thao tác trên Collection đều bị khóa toàn bộ ⇒ hiệu suất thấp hơn
+            Các luồng không thể thực hiện song song
+
+    ➤ Chức năng bị giới hạn (Limited functionality)
+            Một số thao tác không được hỗ trợ linh hoạt như trong các Collection đồng thời
+
+    ➤ Không hỗ trợ Fail-fast iterators
+            Khi một luồng đang duyệt (iterate), nếu có luồng khác thay đổi Collection ⇒ dễ bị lỗi ConcurrentModificationException
+
+    ➤ Tăng overhead xử lý (Performance Overhead)
+            Vì luôn dùng khóa nên chi phí đồng bộ tăng, gây ảnh hưởng đến tốc độ và hiệu suất của ứng dụng
