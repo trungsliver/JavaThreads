@@ -1,0 +1,33 @@
+=================== LOCKS THEORY ===================
+
+1. Lock là gì?
+    - Lock (khóa) là một cơ chế kiểm soát truy cập tài nguyên dùng chung trong lập trình đa luồng.
+    - Khi một luồng (thread) giữ Lock, các luồng khác phải đợi đến khi Lock được nhả ra mới được truy cập tài nguyên đó.
+
+2. Tại sao Lock lại quan trọng?
+    - Khi có nhiều luồng cùng truy cập và thay đổi một tài nguyên (ví dụ: một biến, danh sách...), sẽ dễ xảy ra xung đột dữ liệu (race condition).
+    - Lock giúp đảm bảo chỉ một luồng được phép làm việc với tài nguyên tại một thời điểm, từ đó tránh lỗi.
+
+3. Các loại Lock trong Java:
+    - ReentrantLock: Cho phép luồng giữ lock nhiều lần mà không bị deadlock.
+    - ReadWriteLock: Cho phép nhiều luồng đọc đồng thời, nhưng chỉ một luồng ghi tại một thời điểm.
+    - StampedLock: Cung cấp khả năng đọc/ghi với hiệu suất cao hơn, cho phép các thao tác không đồng bộ.
+    - Semaphore: Cho phép kiểm soát số lượng luồng truy cập tài nguyên,
+        hữu ich trong các tình huống cần giới hạn số lượng luồng truy cập đồng thời.
+
+4. So sánh Lock với synchronized block:
+
+    | Tiêu chí                         | Synchronized Block      | Lock (ReentrantLock, etc.)              |
+    | -------------------------------- | ----------------------- | --------------------------------------- |
+    | ✍ Cách sử dụng                   | Từ khóa `synchronized`  | Dùng lớp Lock (`lock.lock()`)           |
+    | 🔁 Linh hoạt                     | Ít linh hoạt            | Rất linh hoạt                           |
+    | 🧯 Xử lý timeout/gián đoạn       | Không hỗ trợ            | Có thể đặt timeout, kiểm tra trạng thái |
+    | 🚪 Mở rộng (tryLock, unlock,...) | Không                   | Có                                      |
+    | ⚠️ Cần tự `unlock()`             | Không (Java tự mở khóa) | Có (bắt buộc phải tự unlock)            |
+
+5. Ví dụ minh họa:
+    -  Thực tế: Một bếp ăn nhà hàng
+        + Có 1 lò nướng pizza (tài nguyên dùng chung).
+        + Có nhiều đầu bếp (luồng - threads) cần dùng lò để nướng.
+    -  Vấn đề: Nếu 2 đầu bếp dùng lò cùng lúc, pizza sẽ cháy!
+    => Cần Lock để chỉ 1 đầu bếp được dùng lò tại một thời điểm.

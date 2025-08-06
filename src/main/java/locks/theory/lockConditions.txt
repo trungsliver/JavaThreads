@@ -1,0 +1,17 @@
+==================== Lock Conditions ====================
+
+1. Condition là gì?
+    - Condition là một cơ chế chờ – thông báo (wait/notify) được dùng chung với Lock (thay cho synchronized và wait()/notify()).
+    - Khi một luồng không thể tiếp tục vì điều kiện chưa thỏa mãn (ví dụ: hàng đợi rỗng), nó có thể gọi await() để chờ.
+    - Khi điều kiện được đáp ứng (ví dụ: có phần tử trong hàng đợi), một luồng khác sẽ gọi signal() hoặc signalAll() để thông báo cho luồng đang chờ tiếp tục.
+    -  Condition thường đi cùng với ReentrantLock để quản lý nhiều điều kiện chờ khác nhau trong môi trường đa luồng.
+
+2. Hình dung bằng ví dụ thực tế
+   - Tình huống: Nhà hàng và đơn đặt món
+        + Có một nhà bếp (buffer) chỉ chứa được 1 đơn món ăn tại một thời điểm.
+        + Đầu bếp sẽ chờ (await) nếu bàn bếp đã đầy.
+        + Phục vụ sẽ chờ nếu bàn bếp trống, chưa có món.
+        + Khi có món ăn hoặc khi bếp trống, hai bên sẽ thông báo (signal) cho nhau.
+   - Ở đây:
+        + await() giống như “ngồi đợi khi chưa đến lượt.”
+        + signal() giống như “báo hiệu để người khác tiếp tục.”
