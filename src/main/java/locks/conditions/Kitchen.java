@@ -13,11 +13,11 @@ public class Kitchen {
         lock.lock();
         try {
             while (dish != null) {
-                System.out.println("🍳 Bếp đầy, đầu bếp chờ...");
+                System.out.println("Bếp đầy, đầu bếp chờ...");
                 dishTaken.await();  // chờ cho đến khi món được lấy đi
             }
             dish = newDish;
-            System.out.println("👨‍🍳 Đầu bếp nấu xong món: " + dish);
+            System.out.println("Đầu bếp nấu xong món: " + dish);
             dishAvailable.signal();  // thông báo cho phục vụ
         } finally {
             lock.unlock();
@@ -29,10 +29,10 @@ public class Kitchen {
         lock.lock();
         try {
             while (dish == null) {
-                System.out.println("🧍 Bếp trống, phục vụ chờ...");
+                System.out.println("Bếp trống, phục vụ chờ...");
                 dishAvailable.await();  // chờ món xuất hiện
             }
-            System.out.println("🧑‍💼 Phục vụ lấy món: " + dish);
+            System.out.println("Phục vụ lấy món: " + dish);
             dish = null;
             dishTaken.signal();  // thông báo cho đầu bếp tiếp tục nấu
         } finally {
