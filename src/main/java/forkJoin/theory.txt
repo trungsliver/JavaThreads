@@ -1,0 +1,43 @@
+========================= ForkJoin Theory =========================
+
+1. Giới thiệu
+   - ForkJoin là một framework trong Java được thiết kế để xử lý các tác vụ song song,
+        đặc biệt là các tác vụ có thể chia nhỏ thành các phần nhỏ hơn.
+   - Nó sử dụng mô hình "divide and conquer" để chia nhỏ công việc và xử lý chúng song song.
+
+   | Tiêu chí              | Fork/Join Framework                       | Executor Framework                |
+   | --------------------- | ----------------------------------------- | --------------------------------- |
+   | Phân chia công việc   | Có thể chia nhỏ (subtask)                 | Không chia nhỏ công việc          |
+   | Cơ chế xử lý hàng đợi | Mỗi thread có hàng đợi riêng              | Hàng đợi chia sẻ chung            |
+   | Work stealing         | ✅ Có (tự động "trộm" task từ thread khác) | ❌ Không có                        |
+   | Hiệu năng             | Tối ưu cho CPU đa nhân                    | Tổng quát, không tối ưu song song |
+
+
+2. Use of Fork Join Framework (Cách sử dụng Fork Join Framework)
+   ✅ Utilisation of Multi-core Processors
+            Fork/Join tối đa hóa việc sử dụng CPU đa nhân bằng cách chia nhỏ công việc và thực hiện song song.
+
+   ✅ Simplified Parallelism
+            Thay vì tự quản lý thread pool và chia nhỏ dữ liệu, framework hỗ trợ bạn xử lý dễ dàng qua ForkJoinTask.
+
+   ✅ Efficient Work Stealing
+            Thread rảnh có thể “ăn cắp” (steal) các task từ thread khác, tăng hiệu năng và giảm thời gian chờ đợi.
+
+3. Key Concepts in Fork Join Framework (Các khái niệm chính trong Fork Join Framework)
+   🔹 Forking:           Tách một công việc lớn thành nhiều công việc nhỏ.
+   🔹 Joining            Kết hợp lại kết quả từ các công việc nhỏ.
+   🔹 RecursiveTask:     Lớp dành cho task có trả về kết quả.
+   🔹 RecursiveAction:   Lớp dành cho task không trả về kết quả.
+
+4. ForkJoinPool
+   ➤ Work Stealing Algorithm
+            Thread nào rảnh sẽ lấy công việc từ hàng đợi của thread khác để xử lý, tăng hiệu quả đa luồng.
+
+   ➤ Parallelism
+            Số lượng thread mặc định bằng số core CPU (có thể điều chỉnh).
+
+   ➤ Fork & Join Operations
+            Dùng fork() để chia nhỏ và join() để hợp nhất kết quả.
+
+   ➤ Managing Fork Join Tasks
+            Sử dụng ForkJoinPool để submit các task hoặc gọi invoke() để đợi kết quả.
