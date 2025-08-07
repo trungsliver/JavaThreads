@@ -1,0 +1,17 @@
+======================== Mutex ========================
+
+1. Khái niệm:
+    - Mutex (Mutual Exclusion) là một cơ chế đảm bảo rằng chỉ một luồng (thread) có thể truy cập vào tài nguyên dùng chung tại một thời điểm.
+    - Ví dụ: Nếu hai đầu bếp cùng nấu một món ăn trên một bếp duy nhất,
+        cần phải có "chìa khóa" để đảm bảo chỉ một người được nấu tại một thời điểm → đó chính là mutex.
+    - Một mutex cho phép:
+        + Một thread lock (khóa) tài nguyên.
+        + Các thread khác phải chờ cho đến khi tài nguyên được unlock (mở khóa).
+    ✅ Mutex đảm bảo tính toàn vẹn dữ liệu và tránh race condition trong lập trình đa luồng.
+
+2. So sánh:
+    | Cơ chế          | Là Mutex? | Ghi chú                          |
+    | --------------- | --------- | -------------------------------- |
+    | `synchronized`  | ✅         | Dễ dùng, tự động release         |
+    | `ReentrantLock` | ✅         | Tùy biến cao, cần `unlock()` tay |
+    | `Semaphore(1)`  | ✅         | Tùy biến, có thể dùng fairness   |
