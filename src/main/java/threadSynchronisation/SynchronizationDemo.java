@@ -11,7 +11,12 @@ public class SynchronizationDemo {
                 // wrong way to increment the counter
 //                counter++;
                 // correct way to increment the counter (user synchronization)
-                increment();
+                try{
+                    increment();
+                }catch (Exception e){
+                    //e.printStackTrace();
+                }
+
             }
         });
 
@@ -20,7 +25,12 @@ public class SynchronizationDemo {
                 // wrong way to increment the counter
 //                counter++;
                 // correct way to increment the counter (user synchronization)
-                increment();
+                try{
+                    increment();
+                }catch (Exception e){
+                   // e.printStackTrace();
+                }
+
             }
         });
 
@@ -43,6 +53,8 @@ public class SynchronizationDemo {
     // This method is synchronized to ensure that only one thread can increment the counter at a time
     // synchronized: chỉ được thực hiện bởi một thread tại một thời điểm
     private synchronized static void increment() {
+        System.out.println(counter);
         counter++;
+        throw new RuntimeException();
     }
 }

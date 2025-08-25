@@ -6,7 +6,7 @@ public class DeamonUserThreadDemo {
         Thread userThread = new Thread(new UserHelper());
 
         // Thiết lập backgroundThread là luồng daemon
-        backgroundThread.setDaemon(true);
+        backgroundThread.setDaemon(false);
 
         backgroundThread.start();
         userThread.start();
